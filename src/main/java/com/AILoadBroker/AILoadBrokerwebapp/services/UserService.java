@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-// This service class provides business logic related to users.
 @Service
 public class UserService {
 
@@ -22,6 +22,20 @@ public class UserService {
     // Fetch a user by their username.
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    // Register a new user.
+    public User register(User user) {
+        // Check if a user with the same username already exists.
+        User existingUser = userRepository.findByUsername(user.getUsername());
+        if (existingUser != null) {
+            // Handle the case where a user with the same username already exists.
+            // You can throw a custom exception or return null.
+            throw new RuntimeException("User with username " + user.getUsername() + " already exists.");
+        }
+
+        // Save the new user to the database.
+        return userRepository.save(user);
     }
 
     // Other CRUD operations can be added here.

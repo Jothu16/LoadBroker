@@ -55,6 +55,14 @@
         </dependency>
     </dependencies>
 
+        <!-- JUnit Jupiter (JUnit 5) -->
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.7.2</version> <!-- Use the appropriate version -->
+        <scope>test</scope>
+    </dependency>
+
     <!-- Build Configuration -->
     <build>
         <plugins>
@@ -65,17 +73,17 @@
         </plugins>
     </build>
 
-    <!-- WebSocket dependency -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-websocket</artifactId>
-</dependency>
+        <!-- WebSocket dependency -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
 
-<!-- For WebSocket broker (optional if you want to use an external broker like RabbitMQ) -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-messaging</artifactId>
-</dependency>
+    <!-- For WebSocket broker (optional if you want to use an external broker like RabbitMQ) -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-messaging</artifactId>
+    </dependency>
 
 
 </project>

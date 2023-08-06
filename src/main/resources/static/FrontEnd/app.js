@@ -31,3 +31,28 @@ function registerUser() {
 
 // Initialize WebSocket on page load
 window.onload = initializeWebSocket;
+
+// ... (any existing code you have)
+
+// Function to register a user
+function registerUser() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    fetch('/api/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('User registered:', data);
+        })
+        .catch(error => {
+            console.error('Error registering user:', error);
+        });
+}
+
+// ... (any other functions or code you have)
