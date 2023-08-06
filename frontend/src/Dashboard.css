@@ -1,0 +1,14 @@
+.dashboard {
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.dashboard h2 {
+    margin-bottom: 20px;
+}
+
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

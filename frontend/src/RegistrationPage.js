@@ -1,4 +1,6 @@
 import React from 'react';
+import './RegisterPage.css';
+
 
 // This component provides a registration form for new users.
 function RegistrationPage() {

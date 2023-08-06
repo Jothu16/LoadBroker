@@ -1,4 +1,6 @@
 import React from 'react';
+import './LoginPage.css';
+
 
 // This component provides a login form for existing users.
 function LoginPage() {
