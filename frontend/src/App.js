@@ -11,13 +11,13 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <Router>
-        <Route path="/" exact component={LandingPage} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/register" component={RegistrationPage} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/home" component={HomePage} />
-      </Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegistrationPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/home" element={<HomePage />} />
+      </Routes>
     </Router>
   );
 }

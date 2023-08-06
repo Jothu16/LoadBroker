@@ -16,7 +16,7 @@ function LoginPage() {
         // If not, show an error message.
         
         // For demonstration purposes, let's assume the login is always successful:
-        useNavigate.push('/dashboard');  // Redirect to dashboard after login
+        navigate('/dashboard');  // Redirect to dashboard after login
     };
 
     return (

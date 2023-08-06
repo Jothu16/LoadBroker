@@ -7,11 +7,11 @@ function LandingPage() {
   const navigate = useNavigate();
 
 const handleLoginClick = () => {
-    useNavigate.push('/login'); // Navigate to the login page
+    navigate('/login'); // Navigate to the login page
 };
 
 const handleRegisterClick = () => {
-    useNavigate.push('/register'); // Navigate to the registration page
+    navigate('/register'); // Navigate to the registration page
 };
 
 
