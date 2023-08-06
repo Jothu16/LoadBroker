@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import User from '../models/User.js';
+import bcrypt from 'bcrypt';
 
 router.post('/register', async (req, res) => {
     try {
@@ -12,10 +13,14 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ message: "User with this email already exists." });
         }
 
-        // Create a new user
+        // Hash the password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Create a new user with the hashed password
         const newUser = new User({
             username,
-            password, // Note: In a real-world scenario, you'd want to hash the password before saving.
+            password: hashedPassword,
             email
         });
 
