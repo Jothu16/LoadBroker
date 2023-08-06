@@ -1,21 +1,14 @@
 import React from 'react';
+import './App.css';
+import LandingPage from './LandingPage';
 
-// This component provides a login form for existing users.
-function LoginPage() {
-    return ( <
-        div className = "login-page" >
-        <
-        h2 > Login < /h2> <
-        form > { /* Input fields for username and password */ } <
-        input type = "text"
-        placeholder = "Username" / >
-        <
-        input type = "password"
-        placeholder = "Password" / > { /* Login button */ } <
-        button type = "submit" > Login < /button> < /
-        form > <
-        /div>
+// This is the main App component that renders the LandingPage.
+function App() {
+    return (
+        <div className="App">
+            <LandingPage />
+        </div>
     );
 }
 
-export default LoginPage;
+export default App;
