@@ -1,19 +1,17 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+import express, { json } from 'express';
+import { connect } from 'mongoose';
+import cors from 'cors';
 
 const app = express();
-const usersRoute = require('./routes/users');
-
+import usersRoute from './routes/users';
 
 // Middleware
-app.use(express.json()); // Parse JSON request body
+app.use(json()); // Parse JSON request body
 app.use(cors()); // Enable CORS
 app.use('/api/users', usersRoute);
 
-
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/LoadBroker', {
+connect('mongodb://localhost:27017/LoadBroker', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
