@@ -18,7 +18,7 @@ app.use(cors()); // Enable CORS
 app.use('/api/users', usersRoute);
 
 // Connect to MongoDB
-connect('mongodb://localhost:27017/LoadBroker', {
+connect('mongodb://127.0.0.1:27017/LoadBroker', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

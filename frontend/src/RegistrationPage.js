@@ -1,15 +1,17 @@
-import React from 'react';
-import './RegisterPage.css';
-import { useState } from 'react';
+import React, { useState } from 'react';  // Added useState import
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-
-
-// This component provides a registration form for new users.
 function RegistrationPage() {
+    const navigate = useNavigate();
+    const [registrationStatus, setRegistrationStatus] = useState('');  // New state for registration status
 
     const handleRegistration = async (event) => {
         event.preventDefault();
+        const formData = new FormData(event.target);
+        const username = formData.get('username');
+        const password = formData.get('password');
+        const email = formData.get('email');
 
         try {
             const response = await axios.post('http://localhost:5000/api/users/register', {
@@ -18,47 +20,31 @@ function RegistrationPage() {
                 email
             });
 
-            console.log(response.data.message); // "User registered successfully!"
+            console.log(response.data.message);
+            setRegistrationStatus(response.data.message);  // Update registration status on success
+
+            // Optionally, you can navigate the user to the login page after successful registration
+            // navigate('/login');
         } catch (error) {
             console.error("Error registering user:", error.response.data.message);
+            setRegistrationStatus(error.response.data.message);  // Update registration status on error
         }
     };
-
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
 
     return (
         <div className="registration-page">
             <h2>Register</h2>
-            <form onSubmit={handleRegistration}> {/* Add the onSubmit attribute here */}
-                {/* Input fields for username, password, and email */}
-                <input 
-                    type="text" 
-                    placeholder="Username" 
-                    value={username} 
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <input 
-                    type="password" 
-                    placeholder="Password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <input 
-                    type="email" 
-                    placeholder="Email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-
-                {/* Registration button */}
+            <form onSubmit={handleRegistration}>
+                <input type="text" name="username" placeholder="Username" required />
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
                 <button type="submit">Register</button>
             </form>
+            {registrationStatus && <p>{registrationStatus}</p>}  {/* Display the registration status */}
         </div>
     );
 }
 
-
 export default RegistrationPage;
+
 
