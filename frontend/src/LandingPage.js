@@ -1,17 +1,17 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
 
 
 function LandingPage() {
-    const history = useHistory();
+  const navigate = useNavigate();
 
 const handleLoginClick = () => {
-    history.push('/login'); // Navigate to the login page
+    useNavigate.push('/login'); // Navigate to the login page
 };
 
 const handleRegisterClick = () => {
-    history.push('/register'); // Navigate to the registration page
+    useNavigate.push('/register'); // Navigate to the registration page
 };
 
 

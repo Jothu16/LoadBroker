@@ -1,9 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // This component provides a login form for existing users.
 function LoginPage() {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -16,7 +16,7 @@ function LoginPage() {
         // If not, show an error message.
         
         // For demonstration purposes, let's assume the login is always successful:
-        history.push('/dashboard');  // Redirect to dashboard after login
+        useNavigate.push('/dashboard');  // Redirect to dashboard after login
     };
 
     return (
