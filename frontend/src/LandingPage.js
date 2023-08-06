@@ -19,7 +19,7 @@ const handleRegisterClick = () => {
         <div className="landing-page">
             <h2>Welcome to AI Load Broker</h2>
             <button onClick={handleLoginClick}>Login</button>
-            <button>Register</button>
+            <button onClick={handleRegisterClick}>Register</button>
         </div>
     );
 }
