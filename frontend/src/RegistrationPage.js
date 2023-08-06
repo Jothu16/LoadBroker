@@ -1,16 +1,27 @@
 import React from 'react';
 import './RegisterPage.css';
 import { useState } from 'react';
+import axios from 'axios';
+
 
 
 // This component provides a registration form for new users.
 function RegistrationPage() {
 
-    const handleRegistration = (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
+    const handleRegistration = async (event) => {
+        event.preventDefault();
 
-    // Here, you'll send the form data to the backend
-    console.log("User Registration Data:", { username, password, email });
+        try {
+            const response = await axios.post('http://localhost:5000/api/users/register', {
+                username,
+                password,
+                email
+            });
+
+            console.log(response.data.message); // "User registered successfully!"
+        } catch (error) {
+            console.error("Error registering user:", error.response.data.message);
+        }
     };
 
     const [username, setUsername] = useState('');
