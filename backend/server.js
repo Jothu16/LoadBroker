@@ -2,8 +2,8 @@ import express, { json } from 'express';
 import { connect } from 'mongoose';
 import cors from 'cors';
 
-const app = express();
-import usersRoute from './routes/users';
+// Corrected import path
+import usersRoute from './routes/users.js';
 
 // Middleware
 app.use(json()); // Parse JSON request body
