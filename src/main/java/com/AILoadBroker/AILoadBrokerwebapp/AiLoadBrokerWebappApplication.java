@@ -1,0 +1,13 @@
+package com.AILoadBroker.AILoadBrokerwebapp;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class AiLoadBrokerWebappApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AiLoadBrokerWebappApplication.class, args);
+	}
+
+}
