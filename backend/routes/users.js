@@ -32,4 +32,26 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(400).json({ message: "Invalid email or password." });
+    }
+
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        return res.status(400).json({ message: "Invalid email or password." });
+    }
+
+    // Create JWT
+    const token = jwt.sign({ id: user._id }, 'YOUR_SECRET_KEY', { expiresIn: '1h' }); //YOUR_SECRET_KEY, TEMP 1234, CHANGE LATER
+
+    res.json({ token, userId: user._id });
+});
+
+
 export default router;

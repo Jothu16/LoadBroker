@@ -1,27 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-// This component provides a login form for existing users.
 function LoginPage() {
     const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState(''); // State to handle error messages
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const username = formData.get('username');
         const password = formData.get('password');
-        
-        // Here, you'd typically make an API call to your backend to authenticate the user.
-        // If successful, navigate to the dashboard or another page.
-        // If not, show an error message.
-        
-        // For demonstration purposes, let's assume the login is always successful:
-        navigate('/dashboard');  // Redirect to dashboard after login
+
+        try {
+            const response = await axios.post('http://localhost:5000/api/users/login', {
+                username,
+                password
+            });
+
+            if (response.status === 200) {
+                const { token, userId } = response.data;
+                localStorage.setItem('token', token);
+                localStorage.setItem('userId', userId);
+                navigate('/dashboard');  // Redirect to dashboard after successful login
+            } else {
+                setErrorMessage('Login failed. Please check your credentials.');
+            }
+        } catch (error) {
+            console.error("Error logging in:", error);
+            setErrorMessage(error.response?.data?.message || 'Login failed. Please try again.');
+        }
     };
 
     return (
         <div className="login-page">
             <h2>Login</h2>
+            {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message if any */}
             <form onSubmit={handleSubmit}>
                 <input type="text" name="username" placeholder="Username" />
                 <input type="password" name="password" placeholder="Password" />
