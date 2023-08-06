@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Broker App</title>
+    <!-- Add Bootstrap for basic styling -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>Load Broker App</h2>
+
+        <!-- Basic form to interact with backend -->
+        <div id="user-section">
+            <h4>User Registration</h4>
+            <input type="text" id="username" placeholder="Enter username">
+            <button onclick="registerUser()">Register</button>
+        </div>
+
+        <!-- WebSocket section -->
+        <div id="websocket-section">
+            <h4>WebSocket Test</h4>
+            <input type="text" id="message" placeholder="Enter message">
+            <button onclick="sendMessage()">Send Message</button>
+            <div id="received-messages"></div>
+        </div>
+    </div>
+
+    <!-- Add JavaScript at the end -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>

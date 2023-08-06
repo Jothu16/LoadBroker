@@ -65,4 +65,17 @@
         </plugins>
     </build>
 
+    <!-- WebSocket dependency -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-websocket</artifactId>
+</dependency>
+
+<!-- For WebSocket broker (optional if you want to use an external broker like RabbitMQ) -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-messaging</artifactId>
+</dependency>
+
+
 </project>
