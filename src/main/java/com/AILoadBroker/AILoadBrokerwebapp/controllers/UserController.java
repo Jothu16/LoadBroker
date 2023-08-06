@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         User registeredUser = userService.register(user);
-        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+        return ResponseEntity.ok(registeredUser);
     }
 
     // ... (any existing methods you have)
