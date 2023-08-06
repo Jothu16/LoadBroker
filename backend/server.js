@@ -5,6 +5,13 @@ import cors from 'cors';
 // Corrected import path
 import usersRoute from './routes/users.js';
 
+// Initialize the Express application
+const app = express();
+
+app.get('/', (req, res) => {
+    res.send('Welcome to the API!');
+});
+
 // Middleware
 app.use(json()); // Parse JSON request body
 app.use(cors()); // Enable CORS
@@ -23,3 +30,4 @@ const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
