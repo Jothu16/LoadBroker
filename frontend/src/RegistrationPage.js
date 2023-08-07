@@ -41,7 +41,7 @@ return (
     <div className="registration-page">
         <h2>Register</h2>
         <form onSubmit={handleRegistration}>
-            <input type="text" name="username" placeholder="Username" required />
+            <input type="text" name="firstName" placeholder="First Name" required />
             <input type="email" name="email" placeholder="Email" required />
             <input type="password" name="password" placeholder="Password" required />
             <button type="submit">Register</button>
@@ -49,6 +49,7 @@ return (
         {registrationStatus && <p>{registrationStatus}</p>}
     </div>
 );
+
 
 }
 

@@ -4,17 +4,17 @@ import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
     const navigate = useNavigate();
-    const [errorMessage, setErrorMessage] = useState(''); // State to handle error messages
+    const [loginStatus, setLoginStatus] = useState(''); // State to handle login status
 
-    const handleSubmit = async (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const username = formData.get('username');
+        const email = formData.get('email'); // Get email instead of username
         const password = formData.get('password');
 
         try {
             const response = await axios.post('http://localhost:5000/api/users/login', {
-                username,
+                email, // Send email instead of username
                 password
             });
 
@@ -24,14 +24,13 @@ function LoginPage() {
                 localStorage.setItem('userId', userId);
                 navigate('/dashboard');  // Redirect to dashboard after successful login
             } else {
-                setErrorMessage('Login failed. Please check your credentials.');
+                setLoginStatus('Login failed. Please check your credentials.');
             }
         } catch (error) {
             console.error("Error logging in:", error);
-            setErrorMessage(error.response?.data?.message || 'Login failed. Please try again.');
+            setLoginStatus(error.response?.data?.message || 'Login failed. Please try again.');
         }
     };
-
 
     return (
         <div className="login-page">
@@ -41,7 +40,7 @@ function LoginPage() {
                 <input type="password" name="password" placeholder="Password" required />
                 <button type="submit">Login</button>
             </form>
-            {loginStatus && <p>{loginStatus}</p>}
+            {loginStatus && <p>{loginStatus}</p>} // Display the login status
         </div>
     );
 }
