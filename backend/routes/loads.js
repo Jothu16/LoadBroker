@@ -1,10 +1,7 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import Load from '../models/Load';  // Ensure this path correctly points to your Load.js model file
 
 const router = express.Router();
-
-// Assuming you've set up a Mongoose model for Loads
-const Load = mongoose.model('Load');
 
 // GET all loads
 router.get('/', async (req, res) => {

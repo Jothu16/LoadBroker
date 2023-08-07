@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Main Dashboard Component
 function Dashboard() {
-    // State to hold the loads data
-    const [loads, setLoads] = useState([]);
+    const [loads, setLoads] = useState([]);  // State to hold the loads data
 
-    // useEffect hook to fetch data when the component mounts
     useEffect(() => {
         // Fetch loads data from the backend
-        const fetchLoads = async () => {
+        const fetchData = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/loads');
                 setLoads(response.data);
@@ -18,9 +15,8 @@ function Dashboard() {
             }
         };
 
-        fetchLoads();
+        fetchData();
     }, []);
-
 
     return (
         <div className="dashboard container-fluid">
@@ -86,7 +82,6 @@ function AvailableLoads({ data }) {
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Origin</th>
                         <th>Destination</th>
                         <th>Price</th>
@@ -96,23 +91,16 @@ function AvailableLoads({ data }) {
                 <tbody>
                     {data.map(load => (
                         <tr key={load._id}>
-                            <td>{load._id}</td>
                             <td>{load.origin}</td>
                             <td>{load.destination}</td>
-                            <td>${load.price}</td>
+                            <td>{load.price}</td>
                             <td>{new Date(load.date).toLocaleDateString()}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             
-            <LoadDetails data={data} />
-            <CarrierRatings data={data} />
-            <BookingHistory data={data} />
-            <PriceEstimator />
-            <Notifications data={data} />
-            <PaymentHistory data={data} />
-            <SupportHelp />
+            {/* ... rest of the components */}
         </div>
     );
 }
