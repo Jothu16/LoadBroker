@@ -5,52 +5,53 @@ import { useNavigate } from 'react-router-dom';
 function RegistrationPage() {
     const navigate = useNavigate();
     const [registrationStatus, setRegistrationStatus] = useState('');
+    const [isLoading, setIsLoading] = useState(false);  // Loading state
 
-        const handleRegistration = async (event) => {
+    const handleRegistration = async (event) => {
         event.preventDefault();
+        setIsLoading(true);  // Set loading state to true when registration starts
+
         const formData = new FormData(event.target);
-        const username = formData.get('username');
+        const firstName = formData.get('firstName');
         const password = formData.get('password');
         const email = formData.get('email');
 
         try {
-            const response = await axios.post('http://localhost:5000/api/users/register', {
-                username,
+            const { data } = await axios.post('http://localhost:5000/api/users/register', {
+                firstName,
                 password,
                 email
             });
 
-            console.log(response.data.message);
-            setRegistrationStatus(response.data.message);  // Update registration status on success
+            console.log(data.message);
+            setRegistrationStatus(data.message);  // Update registration status on success
 
             // Optionally, navigate the user to the login page after successful registration
             // navigate('/login');
         } catch (error) {
             console.error("Error registering user:", error);
-            if (error.response && error.response.data && error.response.data.message) {
-                setRegistrationStatus(error.response.data.message);  // Update registration status on error
-            } else {
-                setRegistrationStatus("An unexpected error occurred. Please try again.");
-            }
+            const errorMessage = error.response?.data?.message || "An unexpected error occurred. Please try again.";
+            setRegistrationStatus(errorMessage);  // Update registration status on error
+        } finally {
+            setIsLoading(false);  // Set loading state to false when registration ends
         }
     };
 
-// ... (rest of the code)
-
-return (
-    <div className="registration-page">
-        <h2>Register</h2>
-        <form onSubmit={handleRegistration}>
-            <input type="text" name="firstName" placeholder="First Name" required />
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="password" placeholder="Password" required />
-            <button type="submit">Register</button>
-        </form>
-        {registrationStatus && <p>{registrationStatus}</p>}
-    </div>
-);
-
-
+    return (
+        <div className="registration-page" style={{ padding: '20px' }}>
+            <h2>Register</h2>
+            <form onSubmit={handleRegistration}>
+                <input type="text" name="firstName" placeholder="First Name" required style={{ display: 'block', marginBottom: '10px' }} />
+                <input type="email" name="email" placeholder="Email" required style={{ display: 'block', marginBottom: '10px' }} />
+                <input type="password" name="password" placeholder="Password" required style={{ display: 'block', marginBottom: '10px' }} />
+                <button type="submit" disabled={isLoading}>
+                    {isLoading ? 'Registering...' : 'Register'}
+                </button>
+            </form>
+            {registrationStatus && <p style={{ marginTop: '20px', color: 'red' }}>{registrationStatus}</p>}
+        </div>
+    );
 }
 
 export default RegistrationPage;
+
