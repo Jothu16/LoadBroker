@@ -1,12 +1,12 @@
-import React, { useState } from 'react';  // Added useState import
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function RegistrationPage() {
     const navigate = useNavigate();
-    const [registrationStatus, setRegistrationStatus] = useState('');  // New state for registration status
+    const [registrationStatus, setRegistrationStatus] = useState('');
 
-    const handleRegistration = async (event) => {
+        const handleRegistration = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const username = formData.get('username');
@@ -23,11 +23,15 @@ function RegistrationPage() {
             console.log(response.data.message);
             setRegistrationStatus(response.data.message);  // Update registration status on success
 
-            // Optionally, you can navigate the user to the login page after successful registration
+            // Optionally, navigate the user to the login page after successful registration
             // navigate('/login');
         } catch (error) {
-            console.error("Error registering user:", error.response.data.message);
-            setRegistrationStatus(error.response.data.message);  // Update registration status on error
+            console.error("Error registering user:", error);
+            if (error.response && error.response.data && error.response.data.message) {
+                setRegistrationStatus(error.response.data.message);  // Update registration status on error
+            } else {
+                setRegistrationStatus("An unexpected error occurred. Please try again.");
+            }
         }
     };
 
@@ -46,5 +50,3 @@ function RegistrationPage() {
 }
 
 export default RegistrationPage;
-
-

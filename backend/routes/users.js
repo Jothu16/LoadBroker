@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'; // Added this import for JWT
 
 router.post('/register', async (req, res) => {
     try {
@@ -48,10 +49,10 @@ router.post('/login', async (req, res) => {
     }
 
     // Create JWT
-    const token = jwt.sign({ id: user._id }, 'YOUR_SECRET_KEY', { expiresIn: '1h' }); //YOUR_SECRET_KEY, TEMP 1234, CHANGE LATER
+    const token = jwt.sign({ id: user._id }, 'YOUR_SECRET_KEY', { expiresIn: '1h' }); // Make sure to replace 'YOUR_SECRET_KEY' with your actual secret key
 
-    res.json({ token, userId: user._id });
+    // Redirect to dashboard upon successful login
+    res.redirect('/dashboard'); // Assuming your dashboard route is '/dashboard'
 });
-
 
 export default router;
