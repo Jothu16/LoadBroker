@@ -17,19 +17,23 @@ function RegistrationPage() {
         const email = formData.get('email');
 
         try {
-            const { data } = await axios.post('http://localhost:5000/api/users/register', {
+            const response = await axios.post('http://localhost:5000/api/users/register', {
                 firstName,
                 password,
                 email
             });
 
-            console.log(data.message);
-            setRegistrationStatus(data.message);  // Update registration status on success
+            if (response && response.data) {
+                console.log(response.data.message);
+                setRegistrationStatus(response.data.message);  // Update registration status on success
+            } else {
+                throw new Error("Unexpected server response");
+            }
 
             // Optionally, navigate the user to the login page after successful registration
             // navigate('/login');
         } catch (error) {
-            console.error("Error registering user:", error);
+            console.error("Error during registration:", error);
             const errorMessage = error.response?.data?.message || "An unexpected error occurred. Please try again.";
             setRegistrationStatus(errorMessage);  // Update registration status on error
         } finally {
@@ -54,4 +58,3 @@ function RegistrationPage() {
 }
 
 export default RegistrationPage;
-

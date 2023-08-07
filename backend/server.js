@@ -1,33 +1,40 @@
-import express, { json } from 'express';
-import { connect } from 'mongoose';
+import express from 'express';
+import mongoose from 'mongoose';
 import cors from 'cors';
+import passport from 'passport';
+import users from './routes/users.js';  // Corrected this line
+import passportConfig from './config/passport';
 
-// Corrected import path
-import usersRoute from './routes/users.js';
-
-// Initialize the Express application
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the API!');
-});
+// Bodyparser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-// Middleware
-app.use(json()); // Parse JSON request body
-app.use(cors()); // Enable CORS
-app.use('/api/users', usersRoute);
+// CORS middleware
+app.use(cors());
+
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport config
+passportConfig(passport);
+
+// Routes
+app.use('/api/users', users);
 
 // Connect to MongoDB
-connect('mongodb://127.0.0.1:27017/LoadBroker', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('Failed to connect to MongoDB:', err));
+mongoose
+    .connect('mongodb://127.0.0.1:27017/LoadBroker', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB successfully connected'))
+    .catch(err => console.log(err));
 
-// Start the server
-const PORT = 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+
+
+
+
+
 
