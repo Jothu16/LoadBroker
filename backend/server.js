@@ -4,6 +4,8 @@ import cors from 'cors';
 //import passport from 'passport';
 import users from './routes/users.js';  // Corrected this line
 //import passportConfig from './config/passport';
+import loads from './routes/loads.js';  // Import the loads route
+
 
 const app = express();
 
@@ -13,6 +15,9 @@ app.use(express.urlencoded({ extended: false }));
 
 // CORS middleware
 app.use(cors());
+
+// Use the loads route
+app.use('/api/loads', loads);
 
 // Passport middleware
 //app.use(passport.initialize());

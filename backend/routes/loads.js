@@ -1,0 +1,22 @@
+import express from 'express';
+import mongoose from 'mongoose';
+
+const router = express.Router();
+
+// Assuming you've set up a Mongoose model for Loads
+const Load = mongoose.model('Load');
+
+// GET all loads
+router.get('/', async (req, res) => {
+    try {
+        const loads = await Load.find();
+        res.json(loads);
+    } catch (error) {
+        console.error("Error fetching loads:", error);
+        res.status(500).json({ message: "Server error. Please try again." });
+    }
+});
+
+// You can add more routes here for CRUD operations on loads if needed
+
+export default router;
