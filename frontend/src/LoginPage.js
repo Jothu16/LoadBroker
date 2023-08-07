@@ -32,15 +32,16 @@ function LoginPage() {
         }
     };
 
+
     return (
         <div className="login-page">
             <h2>Login</h2>
-            {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message if any */}
-            <form onSubmit={handleSubmit}>
-                <input type="text" name="username" placeholder="Username" />
-                <input type="password" name="password" placeholder="Password" />
+            <form onSubmit={handleLogin}>
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
                 <button type="submit">Login</button>
             </form>
+            {loginStatus && <p>{loginStatus}</p>}
         </div>
     );
 }

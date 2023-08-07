@@ -36,7 +36,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // Check if user exists
+    // Check if user exists using email
     const user = await User.findOne({ email });
     if (!user) {
         return res.status(400).json({ message: "Invalid email or password." });
@@ -48,11 +48,11 @@ router.post('/login', async (req, res) => {
         return res.status(400).json({ message: "Invalid email or password." });
     }
 
-    // Create JWT
-    const token = jwt.sign({ id: user._id }, 'YOUR_SECRET_KEY', { expiresIn: '1h' }); // Make sure to replace 'YOUR_SECRET_KEY' with your actual secret key
+    // Create JWT (assuming you have JWT logic in place)
+    const token = jwt.sign({ id: user._id }, 'YOUR_SECRET_KEY', { expiresIn: '1h' });
 
-    // Redirect to dashboard upon successful login
-    res.redirect('/dashboard'); // Assuming your dashboard route is '/dashboard'
+    res.json({ token, userId: user._id });
 });
+
 
 export default router;

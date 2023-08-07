@@ -35,18 +35,21 @@ function RegistrationPage() {
         }
     };
 
-    return (
-        <div className="registration-page">
-            <h2>Register</h2>
-            <form onSubmit={handleRegistration}>
-                <input type="text" name="username" placeholder="Username" required />
-                <input type="email" name="email" placeholder="Email" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <button type="submit">Register</button>
-            </form>
-            {registrationStatus && <p>{registrationStatus}</p>}  {/* Display the registration status */}
-        </div>
-    );
+// ... (rest of the code)
+
+return (
+    <div className="registration-page">
+        <h2>Register</h2>
+        <form onSubmit={handleRegistration}>
+            <input type="text" name="username" placeholder="Username" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button type="submit">Register</button>
+        </form>
+        {registrationStatus && <p>{registrationStatus}</p>}
+    </div>
+);
+
 }
 
 export default RegistrationPage;
