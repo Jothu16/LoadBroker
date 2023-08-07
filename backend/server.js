@@ -1,9 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import passport from 'passport';
+//import passport from 'passport';
 import users from './routes/users.js';  // Corrected this line
-import passportConfig from './config/passport';
+//import passportConfig from './config/passport';
 
 const app = express();
 
@@ -15,10 +15,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 // Passport middleware
-app.use(passport.initialize());
+//app.use(passport.initialize());
 
 // Passport config
-passportConfig(passport);
+//passportConfig(passport);
 
 // Routes
 app.use('/api/users', users);
