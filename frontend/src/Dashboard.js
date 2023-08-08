@@ -3,22 +3,44 @@ import axios from 'axios';
 
 function Dashboard() {
     const [loads, setLoads] = useState([]);
-    const [error, setError] = useState(null);  // Define the error state variable
+    const [newLoad, setNewLoad] = useState({
+        loadId: '',
+        origin: '',
+        destination: '',
+        weight: '',
+        price: ''
+    });
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/api/loads');
-                console.log("Loads from API:", response.data);
-                setLoads(response.data);
-            } catch (err) {
-                console.error("Error fetching loads:", err);
-                setError(err.message);  // Set the error message
-            }
-        };
-
         fetchData();
     }, []);
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/api/loads');
+            setLoads(response.data);
+        } catch (err) {
+            console.error("Error fetching loads:", err);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewLoad(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post('http://localhost:5000/api/loads', newLoad);
+            fetchData();  // Refresh the loads after adding a new one
+        } catch (err) {
+            console.error("Error adding new load:", err);
+        }
+    };
 
     return (
         <div className="dashboard container-fluid">
@@ -27,10 +49,21 @@ function Dashboard() {
                 <Sidebar />
                 <MainContent loads={loads} />
             </div>
-            {error && <div className="alert alert-danger">{error}</div>}  {/* Display error if any */}
+            <div className="add-load-section">
+                <h3>Add New Load</h3>
+                <form onSubmit={handleSubmit}>
+                    <input type="text" name="loadId" placeholder="Load ID" value={newLoad.loadId} onChange={handleInputChange} required />
+                    <input type="text" name="origin" placeholder="Origin" value={newLoad.origin} onChange={handleInputChange} required />
+                    <input type="text" name="destination" placeholder="Destination" value={newLoad.destination} onChange={handleInputChange} required />
+                    <input type="text" name="weight" placeholder="Weight" value={newLoad.weight} onChange={handleInputChange} required />
+                    <input type="number" name="price" placeholder="Price" value={newLoad.price} onChange={handleInputChange} required />
+                    <button type="submit">Add Load</button>
+                </form>
+            </div>
         </div>
     );
 }
+
 
 // Header Component for the dashboard
 function Header() {
@@ -79,6 +112,23 @@ function MainContent({ loads }) {
 
 // Component to display available loads
 function AvailableLoads({ data }) {
+    // Function to handle the edit operation
+    const handleEdit = async (load) => {
+        // Here, you can open a modal or form to edit the load details
+        // After editing, make an API call to the PUT route to update the load
+        // axios.put(`/api/loads/${load._id}`, updatedLoadData);
+    };
+
+    // Function to handle the delete operation
+    const handleDelete = async (loadId) => {
+        try {
+            await axios.delete(`/api/loads/${loadId}`);
+            // After deleting, you can refresh the loads or remove the load from the state
+        } catch (error) {
+            console.error("Error deleting load:", error);
+        }
+    };
+
     return (
         <div>
             <h3>Available Loads</h3>
@@ -87,8 +137,10 @@ function AvailableLoads({ data }) {
                     <tr>
                         <th>Origin</th>
                         <th>Destination</th>
+                        <th>Weight</th>
                         <th>Price</th>
                         <th>Date</th>
+                        <th>Actions</th> {/* New column for actions */}
                     </tr>
                 </thead>
                 <tbody>
@@ -96,13 +148,17 @@ function AvailableLoads({ data }) {
                         <tr key={load._id}>
                             <td>{load.origin}</td>
                             <td>{load.destination}</td>
+                            <td>{load.weight}</td>
                             <td>{load.price}</td>
                             <td>{new Date(load.date).toLocaleDateString()}</td>
+                            <td>
+                                <button className="btn btn-sm btn-primary mr-2" onClick={() => handleEdit(load)}>Edit</button>
+                                <button className="btn btn-sm btn-danger" onClick={() => handleDelete(load._id)}>Delete</button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            
             {/* ... rest of the components */}
         </div>
     );

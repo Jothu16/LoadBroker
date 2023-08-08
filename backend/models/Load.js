@@ -4,7 +4,7 @@ const LoadSchema = new mongoose.Schema({
     loadId: {
         type: String,
         required: true,
-        unique: true  // Assuming each loadId should be unique
+        unique: true  // Ensuring each loadId is unique
     },
     origin: {
         type: String,
@@ -26,7 +26,6 @@ const LoadSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-    // ... any other fields you want to include
 });
 
 const Load = mongoose.model('Load', LoadSchema);
