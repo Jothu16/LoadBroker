@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Dashboard() {
-    const [loads, setLoads] = useState([]);  // State to hold the loads data
+    const [loads, setLoads] = useState([]);
+    const [error, setError] = useState(null);  // Define the error state variable
 
     useEffect(() => {
-        // Fetch loads data from the backend
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/loads');
+                console.log("Loads from API:", response.data);
                 setLoads(response.data);
-            } catch (error) {
-                console.error("Error fetching loads:", error);
+            } catch (err) {
+                console.error("Error fetching loads:", err);
+                setError(err.message);  // Set the error message
             }
         };
 
@@ -25,6 +27,7 @@ function Dashboard() {
                 <Sidebar />
                 <MainContent loads={loads} />
             </div>
+            {error && <div className="alert alert-danger">{error}</div>}  {/* Display error if any */}
         </div>
     );
 }
