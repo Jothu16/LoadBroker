@@ -4,13 +4,13 @@ const LoadSchema = new mongoose.Schema({
     loadId: {
         type: String,
         required: true,
-        unique: true  // Ensuring each loadId is unique
+        unique: true  // Assuming each loadId should be unique
     },
-    origin: {
+    distributionCenter: {  // Replacing 'origin'
         type: String,
         required: true
     },
-    destination: {
+    port: {  // Replacing 'destination'
         type: String,
         required: true
     },
@@ -26,6 +26,7 @@ const LoadSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+    // ... any other fields you want to include
 });
 
 const Load = mongoose.model('Load', LoadSchema);

@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Dashboard.css'; // Importing the CSS file
+
+
+//mock data
+const truckData = {
+    "Volvo FH16": {
+        year: 2020,
+        tankCapacity: 600 // in liters
+    },
+    "Freightliner Cascadia": {
+        year: 2019,
+        tankCapacity: 550 // in liters
+    }
+    // ... add more truck models and years as needed
+};
+//mock data
 
 function Dashboard() {
     const [loads, setLoads] = useState([]);
     const [newLoad, setNewLoad] = useState({
         loadId: '',
-        origin: '',
-        destination: '',
+        distributionCenter: '',  // Changed from origin
+        port: '',  // Changed from destination
         weight: '',
         price: ''
+    });
+        const [truckInfo, setTruckInfo] = useState({
+        model: '',
+        year: ''
     });
 
     useEffect(() => {
@@ -42,6 +62,21 @@ function Dashboard() {
         }
     };
 
+        const handleTruckInputChange = (e) => {
+        const { name, value } = e.target;
+        setTruckInfo(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleTruckSubmit = (e) => {
+        e.preventDefault();
+        // Here, you can send the truckInfo to the backend or save it in local storage
+        console.log(truckInfo);
+    };
+
+
     return (
         <div className="dashboard container-fluid">
             <Header />
@@ -49,12 +84,41 @@ function Dashboard() {
                 <Sidebar />
                 <MainContent loads={loads} />
             </div>
+            <div className="truck-info-section">
+                <h3>Enter Your Truck Information</h3>
+                <form onSubmit={handleTruckSubmit}>
+                    <select name="model" value={truckInfo.model} onChange={handleTruckInputChange} required>
+                        <option value="">Select Truck Model</option>
+                        {Object.keys(truckData).map(model => (
+                            <option key={model} value={model}>{model} ({truckData[model].year})</option>
+                        ))}
+                    </select>
+                    <button type="submit">Save Truck Info</button>
+                </form>
+            </div>
             <div className="add-load-section">
                 <h3>Add New Load</h3>
                 <form onSubmit={handleSubmit}>
                     <input type="text" name="loadId" placeholder="Load ID" value={newLoad.loadId} onChange={handleInputChange} required />
-                    <input type="text" name="origin" placeholder="Origin" value={newLoad.origin} onChange={handleInputChange} required />
-                    <input type="text" name="destination" placeholder="Destination" value={newLoad.destination} onChange={handleInputChange} required />
+                    
+                    {/* Dropdown for Distribution Center */}
+                    <select name="distributionCenter" value={newLoad.distributionCenter} onChange={handleInputChange} required>
+                        <option value="">Select Distribution Center</option>
+                        {/* Add your distribution centers here */}
+                        <option value="Distribution Center 1">Distribution Center 1</option>
+                        <option value="Distribution Center 2">Distribution Center 2</option>
+                        {/* ... */}
+                    </select>
+                    
+                    {/* Dropdown for Port */}
+                    <select name="port" value={newLoad.port} onChange={handleInputChange} required>
+                        <option value="">Select Port</option>
+                        {/* Add your ports here */}
+                        <option value="Port 1">Port 1</option>
+                        <option value="Port 2">Port 2</option>
+                        {/* ... */}
+                    </select>
+                    
                     <input type="text" name="weight" placeholder="Weight" value={newLoad.weight} onChange={handleInputChange} required />
                     <input type="number" name="price" placeholder="Price" value={newLoad.price} onChange={handleInputChange} required />
                     <button type="submit">Add Load</button>
@@ -111,6 +175,7 @@ function MainContent({ loads }) {
 }
 
 // Component to display available loads
+// Component to display available loads
 function AvailableLoads({ data }) {
     // Function to handle the edit operation
     const handleEdit = async (load) => {
@@ -138,9 +203,9 @@ function AvailableLoads({ data }) {
                         <th>Origin</th>
                         <th>Destination</th>
                         <th>Weight</th>
-                        <th>Price</th>
+                        <th>Price</th> {/* Ensure this header is present */}
                         <th>Date</th>
-                        <th>Actions</th> {/* New column for actions */}
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -149,7 +214,7 @@ function AvailableLoads({ data }) {
                             <td>{load.origin}</td>
                             <td>{load.destination}</td>
                             <td>{load.weight}</td>
-                            <td>{load.price}</td>
+                            <td>${load.price}</td> {/* Ensure this line is present and correctly references the price */}
                             <td>{new Date(load.date).toLocaleDateString()}</td>
                             <td>
                                 <button className="btn btn-sm btn-primary mr-2" onClick={() => handleEdit(load)}>Edit</button>
@@ -159,7 +224,6 @@ function AvailableLoads({ data }) {
                     ))}
                 </tbody>
             </table>
-            {/* ... rest of the components */}
         </div>
     );
 }
