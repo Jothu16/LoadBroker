@@ -26,11 +26,12 @@ function Dashboard() {
         weight: '',
         price: ''
     });
-        const [truckInfo, setTruckInfo] = useState({
+    const [truckInfo, setTruckInfo] = useState({
         model: '',
         year: ''
     });
 
+    // Fetch loads data when the component mounts
     useEffect(() => {
         fetchData();
     }, []);
@@ -62,7 +63,7 @@ function Dashboard() {
         }
     };
 
-        const handleTruckInputChange = (e) => {
+    const handleTruckInputChange = (e) => {
         const { name, value } = e.target;
         setTruckInfo(prevState => ({
             ...prevState,
@@ -75,7 +76,6 @@ function Dashboard() {
         // Here, you can send the truckInfo to the backend or save it in local storage
         console.log(truckInfo);
     };
-
 
     return (
         <div className="dashboard container-fluid">
@@ -203,8 +203,9 @@ function AvailableLoads({ data }) {
                         <th>Origin</th>
                         <th>Destination</th>
                         <th>Weight</th>
-                        <th>Price</th> {/* Ensure this header is present */}
+                        <th>Price</th>
                         <th>Date</th>
+                        <th>Profit</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -214,8 +215,9 @@ function AvailableLoads({ data }) {
                             <td>{load.origin}</td>
                             <td>{load.destination}</td>
                             <td>{load.weight}</td>
-                            <td>${load.price}</td> {/* Ensure this line is present and correctly references the price */}
-                            <td>{new Date(load.date).toLocaleDateString()}</td>
+                            <td>${load.price}</td>
+                            <td>{load.date}</td>
+                            <td>${typeof load.profit === 'number' ? load.profit.toFixed(2) : ''}</td>
                             <td>
                                 <button className="btn btn-sm btn-primary mr-2" onClick={() => handleEdit(load)}>Edit</button>
                                 <button className="btn btn-sm btn-danger" onClick={() => handleDelete(load._id)}>Delete</button>

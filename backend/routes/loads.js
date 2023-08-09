@@ -7,13 +7,18 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const loads = await Load.find();
-        console.log("Fetched loads:", loads);  // Log the fetched loads
-        res.json(loads);
-    } catch (error) {
-        console.error("Error fetching loads:", error);
-        res.status(500).json({ message: "Server error. Please try again." });
+        const updatedLoads = loads.map(load => {
+            const profit = calculateProfit(load, { model: "Volvo FH16" }); // Replace with the actual truck info of the user
+            return { ...load._doc, profit };
+        });
+        console.log("Sending loads:", updatedLoads);
+        res.json(updatedLoads);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
     }
 });
+
 
 // POST a new load
 router.post('/', async (req, res) => {
