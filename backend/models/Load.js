@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
-const LoadSchema = new mongoose.Schema({
+const loadSchema = new mongoose.Schema({
     loadId: {
         type: String,
         required: true,
-        unique: true  // Assuming each loadId should be unique
+        unique: true  // Each loadId should be unique
     },
     distributionCenter: {  // Replacing 'origin'
         type: String,
@@ -15,7 +15,7 @@ const LoadSchema = new mongoose.Schema({
         required: true
     },
     weight: {
-        type: String,
+        type: String,  // Consider changing this to Number if weight is numeric
         required: true
     },
     price: {
@@ -29,6 +29,6 @@ const LoadSchema = new mongoose.Schema({
     // ... any other fields you want to include
 });
 
-const Load = mongoose.model('Load', LoadSchema);
+const Load = mongoose.model('Load', loadSchema);
 
 export default Load;

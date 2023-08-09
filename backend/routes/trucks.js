@@ -1,5 +1,3 @@
-// routes/trucks.js
-
 import express from 'express';
 import Truck from '../models/Truck.js';
 
@@ -14,7 +12,7 @@ router.get('/', async (req, res) => {
         res.json(trucks);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).json({ msg: 'Server Error', error: err.message });
     }
 });
 
@@ -23,6 +21,11 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.post('/', async (req, res) => {
     const { model, year, tankCapacity } = req.body;
+
+    // Validation
+    if (!model || !year || !tankCapacity) {
+        return res.status(400).json({ msg: 'Please provide all required fields.' });
+    }
 
     try {
         let truck = new Truck({
@@ -35,7 +38,7 @@ router.post('/', async (req, res) => {
         res.json(truck);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).json({ msg: 'Server Error', error: err.message });
     }
 });
 

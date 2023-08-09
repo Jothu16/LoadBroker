@@ -8,19 +8,6 @@ import trucks from './routes/trucks.js';
 
 const app = express();
 
-// Mock data for trucks
-const truckData = {
-    "Volvo FH16": {
-        year: 2020,
-        tankCapacity: 600 // in liters
-    },
-    "Freightliner Cascadia": {
-        year: 2019,
-        tankCapacity: 550 // in liters
-    }
-    // ... add more truck models and years as needed
-};
-
 // Bodyparser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
