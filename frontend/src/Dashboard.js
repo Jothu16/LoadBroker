@@ -17,6 +17,7 @@ function Dashboard() {
         model: '',
         year: ''
     });
+    const [selectedTruck, setSelectedTruck] = useState(''); // State to store the selected truck
 
     // Fetch loads and truck data when the component mounts
     useEffect(() => {
@@ -28,6 +29,7 @@ function Dashboard() {
     const fetchData = async () => {
         try {
             const response = await axios.get('http://localhost:5000/api/loads');
+            console.log("Fetched Loads:", response.data);  // Debugging log
             setLoads(response.data);
         } catch (err) {
             console.error("Error fetching loads:", err);
@@ -38,6 +40,11 @@ function Dashboard() {
     const fetchTrucks = async () => {
         try {
             const response = await axios.get('http://localhost:5000/api/trucks');
+            console.log("Fetched Trucks:", response.data);
+            if (!Array.isArray(response.data)) {
+                console.error("Trucks data is not an array:", response.data);
+                return;
+            }
             setTrucks(response.data);
         } catch (err) {
             console.error("Error fetching trucks:", err);
@@ -84,6 +91,21 @@ function Dashboard() {
         }
     };
 
+    // Function to handle truck selection
+    const handleTruckSelection = (e) => {
+        setSelectedTruck(e.target.value);
+    };
+
+    // Function to save the selected truck for the user
+    const saveSelectedTruck = async () => {
+        try {
+            // Assuming you have an API endpoint to save the selected truck for the user
+            await axios.put(`http://localhost:5000/api/users/select-truck/${selectedTruck}`);
+            alert('Truck selected successfully!');
+        } catch (err) {
+            console.error("Error selecting truck:", err);
+        }
+    };
 
     return (
         <div className="dashboard container-fluid">
@@ -92,16 +114,25 @@ function Dashboard() {
                 <Sidebar />
                 <MainContent loads={loads} />
             </div>
-                <div className="truck-info-section">
-                    <h3>Enter Your Truck Information</h3>
-                    <form onSubmit={handleTruckSubmit}>
-                        <input type="text" name="model" placeholder="Truck Model" value={truckInfo.model} onChange={handleTruckInputChange} required />
-                        <input type="number" name="year" placeholder="Year" value={truckInfo.year} onChange={handleTruckInputChange} required />
-                        <input type="number" name="tankCapacity" placeholder="Tank Capacity" value={truckInfo.tankCapacity} onChange={handleTruckInputChange} required />
-                        <button type="submit">Save Truck Info</button>
-                    </form>
-                </div>
-
+            <div className="truck-selection-section">
+                <h3>Select Your Truck</h3>
+                <select value={selectedTruck} onChange={handleTruckSelection}>
+                    <option value="">-- Select a Truck --</option>
+                    {trucks.map(truck => (
+                        <option key={truck._id} value={truck._id}>{truck.model} ({truck.year})</option>
+                    ))}
+                </select>
+                <button onClick={saveSelectedTruck}>Save Selected Truck</button>
+            </div>
+            <div className="truck-info-section">
+                <h3>Enter Your Truck Information</h3>
+                <form onSubmit={handleTruckSubmit}>
+                    <input type="text" name="model" placeholder="Truck Model" value={truckInfo.model} onChange={handleTruckInputChange} required />
+                    <input type="number" name="year" placeholder="Year" value={truckInfo.year} onChange={handleTruckInputChange} required />
+                    <input type="number" name="tankCapacity" placeholder="Tank Capacity" value={truckInfo.tankCapacity} onChange={handleTruckInputChange} required />
+                    <button type="submit">Save Truck Info</button>
+                </form>
+            </div>
             <div className="add-load-section">
                 <h3>Add New Load</h3>
                 <form onSubmit={handleSubmit}>
@@ -116,7 +147,7 @@ function Dashboard() {
                         <option value="Port 1">Port 1</option>
                         <option value="Port 2">Port 2</option>
                     </select>
-                    <input type="text" name="weight" placeholder="Weight" value={newLoad.weight} onChange={handleInputChange} required />
+                    <input type="number" name="weight" placeholder="Weight" value={newLoad.weight} onChange={handleInputChange} required />
                     <input type="number" name="price" placeholder="Price" value={newLoad.price} onChange={handleInputChange} required />
                     <button type="submit">Add Load</button>
                 </form>

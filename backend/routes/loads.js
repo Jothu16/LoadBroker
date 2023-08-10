@@ -1,5 +1,6 @@
 import express from 'express';
 import Load from '../models/Load.js';
+import { calculateProfit } from '../utils/utils.js';  // Import the calculateProfit function
 
 const router = express.Router();
 
@@ -19,7 +20,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-
 // POST a new load
 router.post('/', async (req, res) => {
     const { loadId, distributionCenter, port, weight, price } = req.body;  // Updated fields
@@ -31,6 +31,11 @@ router.post('/', async (req, res) => {
             weight,
             price
         });
+        
+        // Optionally, calculate profit when creating a new load
+        const profit = calculateProfit(newLoad, { model: "Volvo FH16" }); // Replace with the actual truck info of the user
+        newLoad.profit = profit; // Store the profit with the load
+        
         await newLoad.save();
         res.json(newLoad);
     } catch (error) {
@@ -40,5 +45,4 @@ router.post('/', async (req, res) => {
 });
 
 export default router;
-
 

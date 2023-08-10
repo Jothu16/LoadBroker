@@ -1,5 +1,6 @@
 import express from 'express';
 import Truck from '../models/Truck.js';
+import User from '../models/User.js';  // Import the User model
 
 const router = express.Router();
 
@@ -36,6 +37,33 @@ router.post('/', async (req, res) => {
 
         truck = await truck.save();
         res.json(truck);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ msg: 'Server Error', error: err.message });
+    }
+});
+
+// @route   PUT api/trucks/select/:truckId
+// @desc    Select a truck for the user's profile
+// @access  Public (should be Private in a real-world scenario)
+router.put('/select/:truckId', async (req, res) => {
+    const userId = req.body.userId;  // Assuming the userId is sent in the request body
+
+    try {
+        const truck = await Truck.findById(req.params.truckId);
+        if (!truck) {
+            return res.status(404).json({ msg: 'Truck not found' });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        user.selectedTruck = truck._id;
+        await user.save();
+
+        res.json({ msg: 'Truck selected successfully', selectedTruck: truck });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ msg: 'Server Error', error: err.message });

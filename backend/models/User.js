@@ -16,10 +16,12 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    selectedTruck: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Truck'
     }
 });
-
-
 
 userSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
