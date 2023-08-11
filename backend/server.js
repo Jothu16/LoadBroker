@@ -22,7 +22,6 @@ mongoose
     .connect(dbURI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex: true  // This is to ensure that indexing is used, which can help in performance
     })
     .then(() => console.log('MongoDB successfully connected'))
     .catch(err => {
