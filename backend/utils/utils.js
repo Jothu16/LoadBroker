@@ -1,4 +1,4 @@
-import Truck from '../models/Truck.js'; // Import the Truck model using ES6 import
+import Truck from '../models/Truck.js'; 
 
 // Function to calculate distance between origin and destination
 function getDistance(origin, destination) {
@@ -32,4 +32,3 @@ async function calculateProfit(load, truckId) {
 
 // Export the functions
 export { getDistance, calculateProfit };
-//export { calculateProfit };

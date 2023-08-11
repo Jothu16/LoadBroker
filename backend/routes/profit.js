@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import calculateProfit from '../utils/profitCalculator.js';
+
 const router = express.Router();
-const calculateProfit = require('../utils/profitCalculator');
 
 router.post('/calculateProfit', (req, res) => {
     const { load, truck } = req.body;
@@ -8,4 +9,4 @@ router.post('/calculateProfit', (req, res) => {
     res.json({ profit });
 });
 
-module.exports = router;
+export default router;

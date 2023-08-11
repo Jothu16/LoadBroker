@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import estimateTripDuration from '../utils/tripDurationEstimator.js';
+
 const router = express.Router();
-const estimateTripDuration = require('../utils/tripDurationEstimator');
 
 router.post('/estimateTripDuration', (req, res) => {
     const { distance } = req.body;
@@ -8,4 +9,4 @@ router.post('/estimateTripDuration', (req, res) => {
     res.json({ duration });
 });
 
-module.exports = router;
+export default router;

@@ -1,21 +1,54 @@
-const mongoose = require('mongoose');
+import express from 'express';
+import Load from '../models/Load.js';
 
-const loadSchema = new mongoose.Schema({
-    distributionCenter: {
-        type: String,
-        required: true,
-        enum: ['DC1', 'DC2', 'DC3'], // Add more distribution centers as needed
-    },
-    port: {
-        type: String,
-        required: true,
-        enum: ['Port1', 'Port2', 'Port3'], // Add more ports as needed
-    },
-    price: {
-        type: Number,
-        required: true,
-    },
-    // ... other fields
+const router = express.Router();
+
+// Get all loads
+router.get('/', async (req, res) => {
+    try {
+        const loads = await Load.find();
+        res.json(loads);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 });
 
-module.exports = mongoose.model('Load', loadSchema);
+// Get one load
+router.get('/:id', getLoad, (req, res) => {
+    res.json(res.load);
+});
+
+// Create one load
+router.post('/', async (req, res) => {
+    const load = new Load({
+        distributionCenter: req.body.distributionCenter,
+        port: req.body.port,
+        price: req.body.price,
+        // ... other fields
+    });
+
+    try {
+        const newLoad = await load.save();
+        res.status(201).json(newLoad);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+// Middleware function to get a load by ID
+async function getLoad(req, res, next) {
+    let load;
+    try {
+        load = await Load.findById(req.params.id);
+        if (!load) {
+            return res.status(404).json({ message: 'Cannot find load' });
+        }
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    }
+
+    res.load = load;
+    next();
+}
+
+export default router;

@@ -1,36 +1,36 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
 
-
+// Schema for a load in the database
 const loadSchema = new mongoose.Schema({
     loadId: {
         type: String,
         required: true,
-        unique: true  // Each loadId should be unique
+        unique: true  // Ensure each loadId is unique
     },
-    distributionCenter: {  // Replacing 'origin'
+    distributionCenter: {  // The starting point of the load
         type: String,
         required: true
     },
-    port: {  // Replacing 'destination'
+    port: {  // The destination point of the load
         type: String,
         required: true
     },
-    weight: {
-        type: String,  // Consider changing this to Number if weight is numeric
+    weight: {  // Weight of the load
+        type: Number,  // Using Number type for weight
         required: true
     },
-    price: {
+    price: {  // Price of the load
         type: Number,
         required: true
     },
-    date: {
+    date: {  // Date when the load was added
         type: Date,
         default: Date.now
     }
-    // ... any other fields you want to include
+    // Consider adding other fields like 'status' or 'truckId' if needed
 });
 
 const Load = mongoose.model('Load', loadSchema);
 
 export default Load;
+

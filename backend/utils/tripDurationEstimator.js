@@ -3,4 +3,4 @@ function estimateTripDuration(distance) {
     return distance / averageSpeed;
 }
 
-module.exports = estimateTripDuration;
+export default estimateTripDuration;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LandingPage from './LandingPage';  // Corrected path
-import LoginPage from './LoginPage';      // Corrected path
-import RegistrationPage from './RegistrationPage';  // Corrected path
+import LandingPage from './LandingPage';
+import LoginPage from './LoginPage';
+import RegistrationPage from './RegistrationPage';
 import Navbar from './Navbar';
 import Dashboard from './Dashboard';
 import HomePage from './HomePage';

@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
 
-
+// Schema for a truck in the database
 const TruckSchema = new mongoose.Schema({
     model: {
         type: String,
@@ -19,8 +18,9 @@ const TruckSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: 0, // Tank capacity should be positive
-        max: 2000 // Just an example, set an appropriate max value
-    }
+        max: 2000 // Just an example, set an appropriate max value based on real-world data
+    },
+    // Consider adding fields like 'averageMPG' or 'ownerId' if needed
 }, {
     timestamps: true // Automatically manage createdAt and updatedAt fields
 });

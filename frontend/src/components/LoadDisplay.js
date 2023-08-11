@@ -1,16 +1,16 @@
+import React from 'react';
 // ... other imports
 
 function LoadDisplay({ load, truck }) {
     const profit = calculateProfit(load, truck); // Assuming you've imported the calculateProfit function
 
-    let profitClass;
-    if (profit > 1000) { // Example threshold
-        profitClass = 'green';
-    } else if (profit > 500) { // Example threshold
-        profitClass = 'yellow';
-    } else {
-        profitClass = 'red';
-    }
+    const getProfitClass = (profitValue) => {
+        if (profitValue > 1000) return 'green';
+        if (profitValue > 500) return 'yellow';
+        return 'red';
+    };
+
+    const profitClass = getProfitClass(profit);
 
     return (
         <div>

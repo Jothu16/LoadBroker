@@ -10,4 +10,4 @@ function calculateProfit(load, truck) {
     return load.price - fuelCost;
 }
 
-module.exports = calculateProfit;
+export default calculateProfit;
