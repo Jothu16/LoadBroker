@@ -70,6 +70,47 @@ router.put('/select/:truckId', async (req, res) => {
     }
 });
 
-// Additional routes for updating and deleting trucks can be added here...
+// @route   PUT api/trucks/:truckId
+// @desc    Update a truck
+// @access  Public (should be Private in a real-world scenario)
+router.put('/:truckId', async (req, res) => {
+    const { model, year, tankCapacity } = req.body;
+
+    try {
+        let truck = await Truck.findById(req.params.truckId);
+        if (!truck) {
+            return res.status(404).json({ msg: 'Truck not found' });
+        }
+
+        truck.model = model || truck.model;
+        truck.year = year || truck.year;
+        truck.tankCapacity = tankCapacity || truck.tankCapacity;
+
+        await truck.save();
+
+        res.json(truck);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ msg: 'Server Error', error: err.message });
+    }
+});
+
+// @route   DELETE api/trucks/:truckId
+// @desc    Delete a truck
+// @access  Public (should be Private in a real-world scenario)
+router.delete('/:truckId', async (req, res) => {
+    try {
+        const truck = await Truck.findById(req.params.truckId);
+        if (!truck) {
+            return res.status(404).json({ msg: 'Truck not found' });
+        }
+
+        await truck.remove();
+        res.json({ msg: 'Truck deleted successfully' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ msg: 'Server Error', error: err.message });
+    }
+});
 
 export default router;

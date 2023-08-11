@@ -19,6 +19,12 @@ function Dashboard() {
     });
     const [selectedTruck, setSelectedTruck] = useState(''); // State to store the selected truck
 
+        const [newTruck, setNewTruck] = useState({
+        model: '',
+        year: '',
+        tankCapacity: ''
+    });
+
     // Fetch loads and truck data when the component mounts
     useEffect(() => {
         fetchData();
@@ -107,12 +113,39 @@ function Dashboard() {
         }
     };
 
+        const handleTruckChange = (e) => {
+        const { name, value } = e.target;
+        setNewTruck(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleAddTruck = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post('http://localhost:5000/api/trucks', newTruck);
+            fetchTrucks();  // Refresh the trucks after adding a new one
+        } catch (err) {
+            console.error("Error adding new truck:", err.response ? err.response.data : err.message);
+        }
+    };
+
     return (
         <div className="dashboard container-fluid">
             <Header />
             <div className="row">
                 <Sidebar />
                 <MainContent loads={loads} />
+            </div>
+                        <div className="add-truck-section">
+                <h3>Add New Truck</h3>
+                <form onSubmit={handleAddTruck}>
+                    <input type="text" name="model" placeholder="Truck Model" value={newTruck.model} onChange={handleTruckChange} required />
+                    <input type="number" name="year" placeholder="Year" value={newTruck.year} onChange={handleTruckChange} required />
+                    <input type="number" name="tankCapacity" placeholder="Tank Capacity" value={newTruck.tankCapacity} onChange={handleTruckChange} required />
+                    <button type="submit">Add Truck</button>
+                </form>
             </div>
             <div className="truck-selection-section">
                 <h3>Select Your Truck</h3>

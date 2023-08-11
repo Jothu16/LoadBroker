@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+
 
 const TruckSchema = new mongoose.Schema({
     model: {

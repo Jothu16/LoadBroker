@@ -23,14 +23,10 @@ mongoose
     .then(() => console.log('MongoDB successfully connected'))
     .catch(err => console.log(err));
 
-// Use the loads route
-app.use('/api/loads', loads);
-
 // Routes
 app.use('/api/users', users);
-
-// New route to get truck data
-app.use('/api/trucks', trucks);
+app.use('/api/loads', loads);
+app.use('/api/trucks', trucks);  // This route will handle adding, retrieving, updating, and deleting trucks
 
 // Error handling middleware
 app.use((err, req, res, next) => {
