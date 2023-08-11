@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Dashboard.css'; // Importing the CSS file
 
+
 function Dashboard() {
     // State for storing truck and load data
     const [trucks, setTrucks] = useState([]);
@@ -97,9 +98,23 @@ function Dashboard() {
         }
     };
 
-    // Function to handle truck selection
-    const handleTruckSelection = (e) => {
+    const handleTruckSelection = async (e) => {
         setSelectedTruck(e.target.value);
+        const selectedTruckData = trucks.find(truck => truck._id === e.target.value);
+        
+        try {
+            const response = await axios.post('http://localhost:5000/api/calculate-profit', {
+                load: newLoad,  // Assuming you want to calculate profit for the new load
+                truck: selectedTruckData
+            });
+            const updatedLoads = loads.map(load => {
+                load.profit = response.data.profit;
+                return load;
+            });
+            setLoads(updatedLoads);
+        } catch (error) {
+            console.error("Error calculating profit:", error);
+        }
     };
 
     // Function to save the selected truck for the user

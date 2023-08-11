@@ -4,6 +4,8 @@ import cors from 'cors';
 import users from './routes/users.js';
 import loads from './routes/loads.js';
 import trucks from './routes/trucks.js';
+import profitCalc from './routes/profitCalc.js';
+
 
 const app = express();
 
@@ -33,6 +35,8 @@ mongoose
 app.use('/api/users', users);  // User-related routes (registration, login, profile, etc.)
 app.use('/api/loads', loads);  // Load-related routes (add, retrieve, update, delete loads)
 app.use('/api/trucks', trucks);  // Truck-related routes (add, retrieve, update, delete trucks)
+
+app.use('/api', profitCalc);
 
 // Middleware for handling errors
 app.use((err, req, res, next) => {
