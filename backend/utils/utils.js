@@ -1,11 +1,11 @@
 import Truck from '../models/Truck.js'; // Import the Truck model using ES6 import
 
 // Function to calculate distance between origin and destination
-//function getDistance(origin, destination) {
+function getDistance(origin, destination) {
     // You can implement the logic to calculate the distance here
     // For now, I'll return a placeholder value
-   // return 1000; // Placeholder value in miles or kilometers
-//}
+    return 1000; // Placeholder value in miles or kilometers
+}
 
 // Function to calculate profit based on load and truck data
 async function calculateProfit(load, truckId) {
@@ -31,5 +31,5 @@ async function calculateProfit(load, truckId) {
 }
 
 // Export the functions
-//export { getDistance, calculateProfit };
-export { calculateProfit };
+export { getDistance, calculateProfit };
+//export { calculateProfit };
