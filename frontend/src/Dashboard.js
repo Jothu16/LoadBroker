@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Dashboard.css'; // Importing the CSS file
 
-
 function Dashboard() {
     // State for storing truck and load data
     const [trucks, setTrucks] = useState([]);
@@ -120,15 +119,23 @@ function Dashboard() {
     // Function to save the selected truck for the user
     const saveSelectedTruck = async () => {
         try {
+            console.log("Attempting to save selected truck..."); // Debugging log
+
             // Assuming you have an API endpoint to save the selected truck for the user
-            await axios.put(`http://localhost:5000/api/users/select-truck/${selectedTruck}`);
-            alert('Truck selected successfully!');
+            const response = await axios.put(`http://localhost:5000/api/users/select-truck/${selectedTruck}`);
+            
+            console.log("Response from server:", response.data); // Debugging log
+
+            // Display a prompt when the truck is saved successfully
+            alert('Truck selected and saved successfully!');
         } catch (err) {
-            console.error("Error selecting truck:", err);
+            console.error("Error selecting and saving truck:", err);
+            alert('There was an error saving your truck selection. Please try again later.');
         }
     };
 
-        const handleTruckChange = (e) => {
+
+    const handleTruckChange = (e) => {
         const { name, value } = e.target;
         setNewTruck(prevState => ({
             ...prevState,
@@ -162,15 +169,18 @@ function Dashboard() {
                     <button type="submit">Add Truck</button>
                 </form>
             </div>
-            <div className="truck-selection-section">
-                <h3>Select Your Truck</h3>
+            {/* Dropdown for selecting a truck */}
+            <div className="truck-selection">
+                <label>Select a Truck: </label>
                 <select value={selectedTruck} onChange={handleTruckSelection}>
-                    <option value="">-- Select a Truck --</option>
+                    <option value="">--Select a Truck--</option>
                     {trucks.map(truck => (
-                        <option key={truck._id} value={truck._id}>{truck.model} ({truck.year})</option>
+                        <option key={truck._id} value={truck._id}>
+                            {truck.model} - {truck.year}
+                        </option>
                     ))}
                 </select>
-                <button onClick={saveSelectedTruck}>Save Selected Truck</button>
+            <button onClick={saveSelectedTruck}>Save Selected Truck</button>
             </div>
             <div className="truck-info-section">
                 <h3>Enter Your Truck Information</h3>

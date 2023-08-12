@@ -29,15 +29,22 @@ const userSchema = new mongoose.Schema({
 // Pre-save hook to hash the password before saving if it's modified
 userSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
+        console.log(`Hashing password for user with email: ${this.email}`);
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
+        console.log(`Hashed password: ${this.password}`);
     }
     next();
 });
 
 // Method to compare provided password with stored hashed password
 userSchema.methods.isPasswordCorrect = async function (password) {
-    return await bcrypt.compare(password, this.password);
+    console.log(`Checking password for user with email: ${this.email}`);
+    console.log(`Provided password: ${password}`);
+    console.log(`Stored hashed password: ${this.password}`);
+    const isCorrect = await bcrypt.compare(password, this.password);
+    console.log(`Password match result: ${isCorrect}`);
+    return isCorrect;
 };
 
 const User = mongoose.model('User', userSchema);

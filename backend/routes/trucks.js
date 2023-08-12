@@ -10,6 +10,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const trucks = await Truck.find();
+        if (!trucks || trucks.length === 0) {
+            return res.status(404).json({ msg: 'No trucks found' });
+        }
         res.json(trucks);
     } catch (err) {
         console.error(err.message);
