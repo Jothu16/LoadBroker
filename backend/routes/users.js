@@ -2,6 +2,8 @@ import express from 'express';
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import Truck from '../models/Truck.js';
+
 
 const router = express.Router();
 
@@ -72,6 +74,33 @@ router.get('/:userId/truck', async (req, res) => {
             return res.status(404).json({ msg: 'User not found' });
         }
         res.json(user.selectedTruck);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ msg: 'Server Error', error: err.message });
+    }
+});
+
+// @route   PUT api/users/select-truck/:truckId
+// @desc    Select a truck for the user's profile
+// @access  Public (should be Private in a real-world scenario)
+router.put('/select-truck/:truckId', async (req, res) => {
+    const userId = req.body.userId;  // Assuming the userId is sent in the request body
+
+    try {
+        const truck = await Truck.findById(req.params.truckId);
+        if (!truck) {
+            return res.status(404).json({ msg: 'Truck not found' });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        user.selectedTruck = truck._id;
+        await user.save();
+
+        res.json({ msg: 'Truck selected successfully', selectedTruck: truck });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ msg: 'Server Error', error: err.message });
