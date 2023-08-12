@@ -46,11 +46,11 @@ router.post('/', async (req, res) => {
     }
 });
 
-// @route   PUT api/trucks/select/:truckId
+// @route   PUT api/trucks/users/select-truck/:truckId
 // @desc    Select a truck for the user's profile
 // @access  Public (should be Private in a real-world scenario)
-router.put('/select/:truckId', async (req, res) => {
-    const userId = req.body.userId;  // Assuming the userId is sent in the request body
+router.put('/users/select-truck/:truckId', async (req, res) => {
+    const userId = req.body.userId;
 
     try {
         const truck = await Truck.findById(req.params.truckId);

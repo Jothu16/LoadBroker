@@ -62,17 +62,19 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.get('/reset-password', async (req, res) => {
+// @route   GET api/users/:userId/truck
+// @desc    Get selected truck for a user
+// @access  Public (should be Private in a real-world scenario)
+router.get('/:userId/truck', async (req, res) => {
     try {
-        const email = 'hsgrewal16@gmail.com';
-        const newPassword = '123';
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        await User.findOneAndUpdate({ email }, { password: hashedPassword });
-        console.log(`Password reset successfully for user with email: ${email}`);
-        res.status(200).json({ message: "Password reset successfully!" });
-    } catch (error) {
-        console.error("Error resetting password:", error.message);
-        res.status(500).json({ message: "Server error. Please try again." });
+        const user = await User.findById(req.params.userId).populate('selectedTruck');
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+        res.json(user.selectedTruck);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ msg: 'Server Error', error: err.message });
     }
 });
 
