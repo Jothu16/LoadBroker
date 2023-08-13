@@ -4,8 +4,25 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Truck from '../models/Truck.js';
 
-
 const router = express.Router();
+
+// JWT Middleware
+const jwtMiddleware = (req, res, next) => {
+    const token = req.header('x-auth-token'); // Assuming the token is sent in the header with the name 'x-auth-token'
+    
+    if (!token) {
+        return res.status(401).json({ msg: 'No token, authorization denied' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, 'YOUR_SECRET_KEY'); // Replace 'YOUR_SECRET_KEY' with your actual JWT secret
+        req.user = decoded.user;
+        next();
+    } catch (err) {
+        res.status(401).json({ msg: 'Token is not valid' });
+    }
+};
+
 
 router.post('/register', async (req, res) => {
     try {
@@ -83,7 +100,7 @@ router.get('/:userId/truck', async (req, res) => {
 // @route   PUT api/users/select-truck/:truckId
 // @desc    Select a truck for the user's profile
 // @access  Public (should be Private in a real-world scenario)
-router.put('/select-truck/:truckId', async (req, res) => {
+router.put('/select-truck/:truckId', jwtMiddleware, async (req, res) => {
     const userId = req.body.userId;  // Assuming the userId is sent in the request body
 
     try {
@@ -106,5 +123,6 @@ router.put('/select-truck/:truckId', async (req, res) => {
         res.status(500).json({ msg: 'Server Error', error: err.message });
     }
 });
+
 
 export default router;

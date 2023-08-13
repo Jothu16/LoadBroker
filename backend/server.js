@@ -5,6 +5,7 @@ import users from './routes/users.js';
 import loads from './routes/loads.js';
 import trucks from './routes/trucks.js';
 import profitCalc from './routes/profitCalc.js';
+import userTrucksRoutes from './routes/userTrucks.js';
 
 
 const app = express();
@@ -37,6 +38,8 @@ app.use('/api/loads', loads);  // Load-related routes (add, retrieve, update, de
 app.use('/api/trucks', trucks);  // Truck-related routes (add, retrieve, update, delete trucks)
 
 app.use('/api', profitCalc);
+
+app.use('/api/userTrucks', userTrucksRoutes);
 
 // Middleware for handling errors
 app.use((err, req, res, next) => {

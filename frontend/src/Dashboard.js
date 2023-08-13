@@ -19,14 +19,27 @@ function Dashboard() {
     });
     const [selectedTruck, setSelectedTruck] = useState(''); // State to store the selected truck
 
-        const [newTruck, setNewTruck] = useState({
+    const [newTruck, setNewTruck] = useState({
         model: '',
         year: '',
         tankCapacity: ''
     });
 
-    // Fetch loads and truck data when the component mounts
+    const [userId, setUserId] = useState(null);
+
+    // Fetch the current user's details when the component mounts
     useEffect(() => {
+    const fetchCurrentUser = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/api/users/me');
+            setUserId(response.data._id); // Assuming the response contains an _id field for the user
+        } catch (err) {
+            console.error("Error fetching current user:", err);
+        }
+    };
+
+
+        fetchCurrentUser();
         fetchData();
         fetchTrucks();
     }, []);
@@ -116,13 +129,15 @@ function Dashboard() {
         }
     };
 
-    // Function to save the selected truck for the user
+   // Updated function to save the selected truck for the user
     const saveSelectedTruck = async () => {
         try {
             console.log("Attempting to save selected truck..."); // Debugging log
 
-            // Assuming you have an API endpoint to save the selected truck for the user
-            const response = await axios.put(`http://localhost:5000/api/users/select-truck/${selectedTruck}`);
+            // Updated API endpoint to save the selected truck for the user
+            const response = await axios.put(`http://localhost:5000/api/userTrucks/${selectedTruck}`, {
+                userId: userId  // Send the user ID in the request body
+            });
             
             console.log("Response from server:", response.data); // Debugging log
 
@@ -133,7 +148,6 @@ function Dashboard() {
             alert('There was an error saving your truck selection. Please try again later.');
         }
     };
-
 
     const handleTruckChange = (e) => {
         const { name, value } = e.target;
@@ -160,7 +174,7 @@ function Dashboard() {
                 <Sidebar />
                 <MainContent loads={loads} />
             </div>
-                        <div className="add-truck-section">
+            <div className="add-truck-section">
                 <h3>Add New Truck</h3>
                 <form onSubmit={handleAddTruck}>
                     <input type="text" name="model" placeholder="Truck Model" value={newTruck.model} onChange={handleTruckChange} required />
@@ -182,29 +196,13 @@ function Dashboard() {
                 </select>
             <button onClick={saveSelectedTruck}>Save Selected Truck</button>
             </div>
-            <div className="truck-info-section">
-                <h3>Enter Your Truck Information</h3>
-                <form onSubmit={handleTruckSubmit}>
-                    <input type="text" name="model" placeholder="Truck Model" value={truckInfo.model} onChange={handleTruckInputChange} required />
-                    <input type="number" name="year" placeholder="Year" value={truckInfo.year} onChange={handleTruckInputChange} required />
-                    <input type="number" name="tankCapacity" placeholder="Tank Capacity" value={truckInfo.tankCapacity} onChange={handleTruckInputChange} required />
-                    <button type="submit">Save Truck Info</button>
-                </form>
-            </div>
+            {/* Form for adding a new load */}
             <div className="add-load-section">
                 <h3>Add New Load</h3>
                 <form onSubmit={handleSubmit}>
                     <input type="text" name="loadId" placeholder="Load ID" value={newLoad.loadId} onChange={handleInputChange} required />
-                    <select name="distributionCenter" value={newLoad.distributionCenter} onChange={handleInputChange} required>
-                        <option value="">Select Distribution Center</option>
-                        <option value="Distribution Center 1">Distribution Center 1</option>
-                        <option value="Distribution Center 2">Distribution Center 2</option>
-                    </select>
-                    <select name="port" value={newLoad.port} onChange={handleInputChange} required>
-                        <option value="">Select Port</option>
-                        <option value="Port 1">Port 1</option>
-                        <option value="Port 2">Port 2</option>
-                    </select>
+                    <input type="text" name="distributionCenter" placeholder="Distribution Center" value={newLoad.distributionCenter} onChange={handleInputChange} required />
+                    <input type="text" name="port" placeholder="Port" value={newLoad.port} onChange={handleInputChange} required />
                     <input type="number" name="weight" placeholder="Weight" value={newLoad.weight} onChange={handleInputChange} required />
                     <input type="number" name="price" placeholder="Price" value={newLoad.price} onChange={handleInputChange} required />
                     <button type="submit">Add Load</button>
