@@ -129,14 +129,21 @@ function Dashboard() {
         }
     };
 
-   // Updated function to save the selected truck for the user
+    // Updated function to save the selected truck for the user
     const saveSelectedTruck = async () => {
         try {
             console.log("Attempting to save selected truck..."); // Debugging log
 
+            // Retrieve the token from wherever you have stored it (e.g., local storage, context, etc.)
+            const token = localStorage.getItem('token'); // Adjust this line based on how you're storing the token
+
             // Updated API endpoint to save the selected truck for the user
             const response = await axios.put(`http://localhost:5000/api/userTrucks/${selectedTruck}`, {
                 userId: userId  // Send the user ID in the request body
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
             
             console.log("Response from server:", response.data); // Debugging log
