@@ -7,12 +7,14 @@ const loadSchema = new mongoose.Schema({
         required: true,
         unique: true  // Ensure each loadId is unique
     },
-    distributionCenter: {  // The starting point of the load
-        type: String,
+    distributionCenter: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'DistributionCenter',
         required: true
     },
-    port: {  // The destination point of the load
-        type: String,
+    port: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Port',
         required: true
     },
     weight: {  // Weight of the load

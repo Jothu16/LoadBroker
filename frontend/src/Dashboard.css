@@ -3,13 +3,14 @@
     padding: 30px;
     background-color: #f7f7f7;
     font-family: 'Arial', sans-serif;
-    line-height: 1.5; /* Improved readability */
+    line-height: 1.5;
+    color: #333; /* Darker text for better readability */
 }
 
 .dashboard h2, .dashboard h3, .dashboard h4 {
     margin-bottom: 25px;
     color: #2c2c2c;
-    font-weight: 600; /* Bold headings for emphasis */
+    font-weight: 600;
 }
 
 .dashboard-content {
@@ -35,7 +36,7 @@ th, td {
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9; /* Zebra striping for better row distinction */
+    background-color: #f9f9f9;
 }
 
 tr:hover {
@@ -43,9 +44,9 @@ tr:hover {
 }
 
 th {
-    background-color: #444;
+    background-color: #333;
     color: #fff;
-    font-weight: 500; /* Slightly bold column headers */
+    font-weight: 500;
 }
 
 /* Button styles */
@@ -61,7 +62,7 @@ button {
 
 button:hover {
     background-color: #0056b3;
-    transform: scale(1.02); /* Slight scale on hover for feedback */
+    transform: scale(1.02);
 }
 
 /* Input and select styles */
@@ -70,8 +71,14 @@ input, select {
     border: 1px solid #e0e0e0;
     border-radius: 5px;
     margin-bottom: 15px;
-    width: 100%; /* Full width for better alignment */
-    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease; /* Transition for a smoother focus effect */
+}
+
+input:focus, select:focus {
+    border-color: #007bff; /* Highlight color when focused */
+    outline: none;
 }
 
 /* Sidebar styles */
@@ -96,7 +103,7 @@ input, select {
 
 /* Navbar styles */
 .navbar {
-    background-color: #444;
+    background-color: #333;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 15px 30px; /* Increased padding for better spacing */
+    padding: 15px 30px;
 }

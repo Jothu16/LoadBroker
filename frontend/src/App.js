@@ -6,6 +6,7 @@ import RegistrationPage from './RegistrationPage';
 import Navbar from './Navbar';
 import Dashboard from './Dashboard';
 import HomePage from './HomePage';
+import TruckDataManagement from './components/TruckDataManagement'; // Import the new component
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/truckdatamanagement" element={<TruckDataManagement />} /> {/* New route for TruckDataManagement */}
       </Routes>
     </Router>
   );

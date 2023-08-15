@@ -3,6 +3,21 @@ import axios from 'axios';
 import './Dashboard.css'; // Importing the CSS file
 
 function Dashboard() {
+
+        // Function to calculate profit for a given load
+    function calculateProfitForLoad(load, truck, distance, days) {
+        const FUEL_COST_PER_GALLON = 3.00; // Example value, adjust as needed
+        const DRIVER_COST_PER_DAY = 100; // Example value, adjust as needed
+
+        const gallonsNeeded = distance / truck.fuelEfficiency; // Assuming truck data has a fuelEfficiency field
+        const fuelCost = gallonsNeeded * FUEL_COST_PER_GALLON;
+        const durationCost = days * DRIVER_COST_PER_DAY;
+
+        const totalCost = fuelCost + durationCost;
+        const profit = load.price - totalCost;
+
+        return profit;
+    }
     // State for storing truck and load data
     const [trucks, setTrucks] = useState([]);
     const [loads, setLoads] = useState([]);
@@ -26,6 +41,10 @@ function Dashboard() {
     });
 
     const [userId, setUserId] = useState(null);
+    const [distributionCenters, setDistributionCenters] = useState([]);
+    const [ports, setPorts] = useState([]);
+        const [profits, setProfits] = useState([]); // State to store profit data
+
 
     // Fetch the current user's details when the component mounts
     useEffect(() => {
@@ -39,10 +58,56 @@ function Dashboard() {
     };
 
 
+        const fetchProfits = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/profits'); // Replace with the correct endpoint to fetch profit data
+                setProfits(response.data);
+            } catch (error) {
+                console.error("Error fetching profit data:", error);
+            }
+        };
+
+        const fetchDistributionCenters = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/distributionCenters');
+                setDistributionCenters(response.data);
+            } catch (err) {
+                console.error("Error fetching distribution centers:", err);
+            }
+        };
+
+        const fetchPorts = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/ports');
+                setPorts(response.data);
+            } catch (err) {
+                console.error("Error fetching ports:", err);
+            }
+        };
+
+                // After fetching, calculate profits and rank loads
+        const rankedLoads = loads.map(load => {
+            // For simplicity, using a static distance and days. In a real-world scenario, you'd fetch or calculate these values.
+            const distance = 500; // Example distance in miles
+            const estimatedDays = 3; // Example estimated days
+
+            return {
+                ...load,
+                profit: calculateProfitForLoad(load, selectedTruck, distance, estimatedDays)
+            };
+        });
+        
+        rankedLoads.sort((a, b) => b.profit - a.profit); // Sort in descending order of profit
+        setLoads(rankedLoads);
+
         fetchCurrentUser();
         fetchData();
         fetchTrucks();
-    }, []);
+        fetchDistributionCenters();
+        fetchPorts();
+        fetchProfits();
+
+    }, [loads, selectedTruck]);
 
     // Fetch loads data
     const fetchData = async () => {
@@ -208,12 +273,51 @@ function Dashboard() {
                 <h3>Add New Load</h3>
                 <form onSubmit={handleSubmit}>
                     <input type="text" name="loadId" placeholder="Load ID" value={newLoad.loadId} onChange={handleInputChange} required />
-                    <input type="text" name="distributionCenter" placeholder="Distribution Center" value={newLoad.distributionCenter} onChange={handleInputChange} required />
-                    <input type="text" name="port" placeholder="Port" value={newLoad.port} onChange={handleInputChange} required />
+                    
+                    {/* Dropdown for Distribution Centers */}
+                    <select name="distributionCenter" value={newLoad.distributionCenter} onChange={handleInputChange} required>
+                        <option value="">--Select a Distribution Center--</option>
+                        {distributionCenters.map(dc => (
+                            <option key={dc._id} value={dc._id}>
+                                {dc.name}
+                            </option>
+                        ))}
+                    </select>
+                    
+                    {/* Dropdown for Ports */}
+                    <select name="port" value={newLoad.port} onChange={handleInputChange} required>
+                        <option value="">--Select a Port--</option>
+                        {ports.map(port => (
+                            <option key={port._id} value={port._id}>
+                                {port.name}
+                            </option>
+                        ))}
+                    </select>
+                    
                     <input type="number" name="weight" placeholder="Weight" value={newLoad.weight} onChange={handleInputChange} required />
                     <input type="number" name="price" placeholder="Price" value={newLoad.price} onChange={handleInputChange} required />
                     <button type="submit">Add Load</button>
                 </form>
+            </div>
+            {/* Profit Data Section */}
+            <div className="profit-data-section">
+                <h3>Profit Data</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Profit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {profits.map(entry => (
+                            <tr key={entry.id}>
+                                <td>{entry.date}</td>
+                                <td>${entry.profit}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );

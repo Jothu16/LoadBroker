@@ -6,6 +6,7 @@ import loads from './routes/loads.js';
 import trucks from './routes/trucks.js';
 import profitCalc from './routes/profitCalc.js';
 import userTrucksRoutes from './routes/userTrucks.js';
+import truckDataRoutes from './routes/truckDataRoutes.js';
 
 
 const app = express();
@@ -41,6 +42,9 @@ app.use('/api', profitCalc);
 
 app.use('/api/userTrucks', userTrucksRoutes);
 
+app.use('/api/truckdata', truckDataRoutes);
+
+
 // Middleware for handling errors
 app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -52,3 +56,4 @@ const port = process.env.PORT || 5000;
 
 // Start the server
 app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+

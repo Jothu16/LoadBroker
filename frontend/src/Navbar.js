@@ -10,6 +10,7 @@ function Navbar() {
                 <li><a href="/">Home</a></li>
                 <li><a href="/login">Login</a></li>
                 <li><a href="/register">Register</a></li>
+                <li><a href="/truckdatamanagement">Truck Data Management</a></li> {/* Link to TruckDataManagement */}
                 {/* Add more navigation links as needed */}
             </ul>
         </nav>
