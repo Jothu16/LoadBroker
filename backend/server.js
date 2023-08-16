@@ -8,7 +8,6 @@ import profitCalc from './routes/profitCalc.js';
 import userTrucksRoutes from './routes/userTrucks.js';
 import truckDataRoutes from './routes/truckDataRoutes.js';
 
-
 const app = express();
 
 // Middleware for parsing JSON and urlencoded form data
